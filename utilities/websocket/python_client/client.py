@@ -5,8 +5,13 @@ import os
 import websockets
 import uuid
 
+from cognito import get_access_token
+
 # Configure Token
 token = os.getenv('JWT_TOKEN', '')
+
+# As an example, here is how to get the token from cognito.
+# token = get_access_token('USERNAME_HERE', 'PASSWORD_HERE')
 
 # Set WebSocket endpoint
 ws_endpoint = "ws://localhost:8080"
