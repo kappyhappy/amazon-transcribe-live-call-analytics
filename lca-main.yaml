@@ -1112,6 +1112,28 @@ Resources:
         PcaWebAppURL: !Ref PcaWebAppURL
         PcaWebAppCallPathPrefix: !Ref PcaWebAppCallPathPrefix
 
+  WEBSOCKETSTACK:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      # yamllint disable rule:line-length
+      TemplateURL: https://s3.<REGION_TOKEN>.amazonaws.com/<ARTIFACT_BUCKET_TOKEN>/<ARTIFACT_PREFIX_TOKEN>/lca-websocket/lca-websocket.yaml
+      # yamllint enable rule:line-length
+      Parameters:
+        S3BucketName: !GetAtt AISTACK.Outputs.S3BucketName
+        AudioFilePrefix: !Ref AudioFilePrefix
+        CallAnalyticsPrefix: !Ref CallAnalyticsPrefix
+        CallDataStreamName: !GetAtt AISTACK.Outputs.CallDataStreamName
+        CloudFrontPriceClass: !Ref CloudFrontPriceClass
+        TranscribeApiMode: !Ref TranscribeApiMode
+        IsContentRedactionEnabled: !Ref IsContentRedactionEnabled
+        TranscribeContentRedactionType: !Ref TranscribeContentRedactionType
+        TranscribeLanguageCode: !Ref TranscribeLanguageCode
+        TranscribePiiEntityTypes: !Ref TranscribePiiEntityTypes
+        CustomVocabularyName: !Ref CustomVocabularyName
+        CustomLanguageModelName: !Ref CustomLanguageModelName
+        PcaS3BucketName: !Ref PcaS3BucketName
+        UserPoolId: !GetAtt AISTACK.Outputs.UserPool
+
   CONNECTINTEGRATIONSTACK:
     Type: AWS::CloudFormation::Stack
     Condition: ShouldInstallConnectIntegrationStack

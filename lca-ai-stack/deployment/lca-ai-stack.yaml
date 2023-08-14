@@ -384,6 +384,9 @@ Outputs:
   CloudFrontDomainName:
     Description: The full domain name of the CloudFront distribution
     Value: !GetAtt WebAppCloudFrontDistribution.DomainName
+  UserPool:
+    Description: The Cognito User Pool Id
+    Value: !Ref UserPool
 
 Resources:
   ## BUCKET TO STORE STEREO RECORDINGS

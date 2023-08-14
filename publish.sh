@@ -94,6 +94,14 @@ chmod +x ./build-s3-dist.sh
 ./build-s3-dist.sh $BUCKET_BASENAME $PREFIX_AND_VERSION/lca-genesys-audiohook-stack $VERSION $REGION || exit 1
 popd
 
+dir=utilities
+echo "PACKAGING $dir"
+pushd $dir/websocket/deployment
+rm -rf ../out
+chmod +x ./build-s3-dist.sh
+./build-s3-dist.sh $BUCKET_BASENAME $PREFIX_AND_VERSION/lca-websocket $REGION || exit 1
+popd
+
 dir=lca-connect-integration-stack
 echo "PACKAGING $dir"
 pushd $dir
