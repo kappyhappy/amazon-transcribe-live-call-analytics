@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the server script to the working directory
-COPY server.js .
+COPY . .
 
 # Expose the port that the server listens on
 EXPOSE 8080

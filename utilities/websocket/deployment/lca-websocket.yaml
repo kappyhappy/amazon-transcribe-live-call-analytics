@@ -381,7 +381,7 @@ Resources:
       Source:
         Location:
           !Sub "arn:aws:s3:::${BootstrapBucketBaseName}-${AWS::Region}/${BootstrapS3Prefix}/\
-          ${BootstrapVersion}/lca-websocket.zip"
+          lca-websocket.zip"
         Type: S3
         BuildSpec: |
           version: 0.2
