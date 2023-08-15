@@ -878,7 +878,7 @@ Resources:
         - Field: path-pattern
           PathPatternConfig:
             Values:
-              - "/api/v1/*"
+              - "/*"
       ListenerArn:
         Ref: TranscribingAudiohookLoadBalancerListener
       Priority: 100

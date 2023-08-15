@@ -1,4 +1,6 @@
 // imports
+const express = require('express');
+const os = require('os');
 const fs = require('fs');
 const stream = require('stream');
 //const uuid = require('uuid');
@@ -56,6 +58,7 @@ const LAMBDA_HOOK_FUNCTION_ARN = process.env.LAMBDA_HOOK_FUNCTION_ARN || '';
 const TRANSCRIBE_API_MODE = process.env.TRANSCRIBE_API_MODE || 'standard';
 const BUFFER_SIZE = parseInt(process.env.BUFFER_SIZE || '128', 10);
 const TCA_ENABLED = TRANSCRIBE_API_MODE === 'analytics';
+const CPU_HEALTH_THRESHOLD = parseInt(process.env.CPU_HEALTH_THRESHOLD || '50', 10); // used to return unhealthy on health check endpoint after X percent utilized.
 
 // optional - provide custom Transcribe endpoint via env var
 const TRANSCRIBE_ENDPOINT = process.env.TRANSCRIBE_ENDPOINT || '';
@@ -69,6 +72,9 @@ const START_STREAM_RETRY_WAIT_MS = parseInt(process.env.START_STREAM_RETRY_WAIT 
 
 // create WebSocket server
 const wss = new WebSocket.Server({ port: 8080 });
+
+// create express server
+const app = express();
 
 // aws clients
 let tsClientArgs = { region: REGION };
@@ -320,3 +326,20 @@ wss.on('connection', (ws, req) => {
 });
 
 console.log('WebSocket server is running on ws://localhost:8080');
+
+app.get('/health/check', (req, res) => {
+  const cpuUsage = os.loadavg()[0] / os.cpus().length * 100;
+  if (cpuUsage > CPU_HEALTH) {
+    res.status(503).send('Unhealthy');
+  } else {
+    res.status(200).send('Healthy');
+  }
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello from LCA!');
+});
+
+app.listen(80, () => {
+  console.log('LCA Health Check listening on port 80!');
+})
